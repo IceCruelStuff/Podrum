@@ -10,6 +10,8 @@
 * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 """
 
+# from podrum.nbt.tag.ListTag import ListTag
+# from podrum.nbt.NetworkLittleEndianNBTStream import NetworkLittleEndianNBTStream
 from podrum.network.protocol.types.EducationEditionOffer import EducationEditionOffer
 from podrum.network.protocol.types.GameRuleType import GameRuleType
 from podrum.network.protocol.types.GeneratorType import GeneratorType
@@ -101,4 +103,55 @@ class StartGamePacket(DataPacket):
         self.generator = self.getVarInt()
         self.worldGamemode = self.getVarInt()
         self.difficulty = self.getVarInt()
-        # https://github.com/pmmp/PocketMine-MP/blob/stable/src/pocketmine/network/mcpe/protocol/StartGamePacket.php#L197
+        self.getBlockPosition(self.spawnX, self.spawnY, self.spawnZ)
+        self.hasAchievementsDisabled = self.getBool()
+        self.time = self.getVarInt()
+        self.eduEditionOffer = self.getVarInt()
+        self.hasEduFeaturesEnabled = self.getBool()
+        self.eduProductUUID = self.getString()
+        self.rainLevel = self.getLFloat()
+        self.lightningLevel = self.getLFloat()
+        self.hasConfirmedPlatformLockedContent = self.getBool()
+        self.isMultiplayerGame = self.getBool()
+        self.hasLANBroadcast = self.getBool()
+        self.xboxLiveBroadcastMode = self.getVarInt()
+        self.platformBroadcastMode = self.getVarInt()
+        self.commandsEnabled = self.getBool()
+        self.isTexturePacksRequired = self.getBool()
+        self.gameRules = self.getGameRules()
+        self.hasBonusChestEnabled = self.getBool()
+        self.hasStartWithMapEnabled = self.getBool()
+        self.defaultPlayerPermission = self.getVarInt()
+        self.serverChunkTickRadius = self.getLInt()
+        self.hasLockedBehaviorPack = self.getBool()
+        self.hasLockedResourcePack = self.getBool()
+        self.isFromLockedWorldTemplate = self.getBool()
+        self.useMsaGamertagsOnly = self.getBool()
+        self.isFromWorldTemplate = self.getBool()
+        self.isWorldTemplateOptionLocked = self.getBool()
+        self.onlySpawnV1Villagers = self.getBool()
+        self.vanillaVersion = self.getString()
+        self.limitedWorldWidth = self.getLInt()
+        self.limitedWorldLength = self.getLInt()
+        self.isNewNether = self.getBool()
+        if self.getBool():
+            self.experimentalGameplayOverride = self.getBool()
+        else:
+            self.experimentalGameplayOverride = None
+
+        self.levelId = self.getString()
+        self.worldName = self.getString()
+        self.premiumWorldTemplateId = self.getString()
+        self.isTrial = self.getBool()
+        self.isMovementServerAuthoritative = self.getBool()
+        self.currentTick = self.getLLong()
+
+        self.enchantmentSeed = self.getVarInt()
+
+        # blockTable = (NetworkLittleEndianNBTStream().read(self.buffer, False, self.offset, 512))
+        # if blockTable isinstance ListTag:
+        #     raise ValueError("Wrong block table root NBT tag type")
+        # self.blockTable = blockTable
+
+        self.itemTable = []
+        # https://github.com/pmmp/PocketMine-MP/blob/stable/src/pocketmine/network/mcpe/protocol/StartGamePacket.php#L250
