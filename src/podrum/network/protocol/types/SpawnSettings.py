@@ -10,7 +10,7 @@
 * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 """
 
-from podrum.utils.BinaryStream import BinaryStream
+from podrum.network.NetBinaryStream import NetBinaryStream
 
 class SpawnSettings:
     BIOME_TYPE_DEFAULT = 0
@@ -36,7 +36,7 @@ class SpawnSettings:
 
     @staticmethod
     def read(self, in):
-        in = BinaryStream()
+        in = NetBinaryStream()
         biomeType = in.getLShort()
         biomeName = in.getString()
         dimension = in.getVarInt()
@@ -44,7 +44,7 @@ class SpawnSettings:
         return self(biomeType, biomeName, dimension)
 
     def write(self, out):
-        out = BinaryStream()
+        out = NetBinaryStream()
         out.putLShort(self.biomeType)
         out.putString(self.biomeName)
         out.putVarInt(self.dimension)
