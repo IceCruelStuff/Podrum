@@ -15,6 +15,7 @@ from podrum.network.protocol.types.GameRuleType import GameRuleType
 from podrum.network.protocol.types.GeneratorType import GeneratorType
 from podrum.network.protocol.types.MultiplayerGameVisibility import MultiplayerGameVisibility
 from podrum.network.protocol.types.PlayerPermissions import PlayerPermissions
+from podrum.network.protocol.types.SpawnSettings import SpawnSettings
 from podrum.network.protocol.DataPacket import DataPacket
 from podrum.network.protocol.ProtocolInfo import ProtocolInfo
 
@@ -86,3 +87,18 @@ class StartGamePacket(DataPacket):
 
     def decodePayload(self):
         self.entityUniqueId = self.getEntityUniqueId()
+        self.entityRuntimeId = self.getEntityRuntimeId()
+        self.playerGamemode = self.getVarInt()
+
+        self.playerPosition = self.getVector3()
+
+        self.pitch = self.getLFloat()
+        self.yaw = self.getLFloat()
+
+        # level settings
+        self.seed = self.getVarInt()
+        self.spawnSettings = SpawnSettings.read(self)
+        self.generator = self.getVarInt()
+        self.worldGamemode = self.getVarInt()
+        self.difficulty = self.getVarInt()
+        # https://github.com/pmmp/PocketMine-MP/blob/stable/src/pocketmine/network/mcpe/protocol/StartGamePacket.php#L197
