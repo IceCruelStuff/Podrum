@@ -154,4 +154,22 @@ class StartGamePacket(DataPacket):
         # self.blockTable = blockTable
 
         self.itemTable = []
-        # https://github.com/pmmp/PocketMine-MP/blob/stable/src/pocketmine/network/mcpe/protocol/StartGamePacket.php#L250
+        count = self.getUnsignedVarInt()
+        for i in range(0, count):
+            id = self.getString()
+            legacyId = self.getSignedLShort()
+
+            # self.itemTables[id] = legacyId
+
+        self.multiplayerCorrelationId = self.getString()
+        self.enableNewInventorySystem = self.getBool()
+
+    def encodePayload(self):
+        self.putEntityUniqueId(self.entityUniqueId)
+        self.putEntityRuntimeId(self.entityRuntimeId)
+        self.putVarInt(self.playerGamemode)
+
+        self.putVector3(self.playerPosition)
+
+        self.putLFloat(self.pitch)
+        # https://github.com/pmmp/PocketMine-MP/blob/stable/src/pocketmine/network/mcpe/protocol/StartGamePacket.php#L269
