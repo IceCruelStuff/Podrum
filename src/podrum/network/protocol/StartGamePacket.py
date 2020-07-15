@@ -10,8 +10,12 @@
 * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 """
 
-# from podrum.nbt.tag.ListTag import ListTag
-# from podrum.nbt.NetworkLittleEndianNBTStream import NetworkLittleEndianNBTStream
+import json
+import os
+
+#from podrum.nbt.tag.ListTag import ListTag
+#from podrum.nbt.NetworkLittleEndianNBTStream import NetworkLittleEndianNBTStream
+#from podrum.network.convert.RuntimeBlockMapping import RuntimeBlockMapping
 from podrum.network.protocol.types.EducationEditionOffer import EducationEditionOffer
 from podrum.network.protocol.types.GameRuleType import GameRuleType
 from podrum.network.protocol.types.GeneratorType import GeneratorType
@@ -20,6 +24,8 @@ from podrum.network.protocol.types.PlayerPermissions import PlayerPermissions
 from podrum.network.protocol.types.SpawnSettings import SpawnSettings
 from podrum.network.protocol.DataPacket import DataPacket
 from podrum.network.protocol.ProtocolInfo import ProtocolInfo
+from podrum.network.NetBinaryStream import NetBinaryStream
+from podrum.utils.ServerFS import ServerFS
 
 class StartGamePacket(DataPacket):
     NID = ProtocolInfo.START_GAME_PACKET
@@ -148,10 +154,10 @@ class StartGamePacket(DataPacket):
 
         self.enchantmentSeed = self.getVarInt()
 
-        # blockTable = (NetworkLittleEndianNBTStream().read(self.buffer, False, self.offset, 512))
-        # if blockTable isinstance ListTag:
-        #     raise ValueError("Wrong block table root NBT tag type")
-        # self.blockTable = blockTable
+        #blockTable = (NetworkLittleEndianNBTStream().read(self.buffer, False, self.offset, 512))
+        #if isinstance(blockTable, ListTag):
+        #    raise ValueError("Wrong block table root NBT tag type")
+        #self.blockTable = blockTable
 
         self.itemTable = []
         count = self.getUnsignedVarInt()
@@ -159,7 +165,7 @@ class StartGamePacket(DataPacket):
             id = self.getString()
             legacyId = self.getSignedLShort()
 
-            # self.itemTables[id] = legacyId
+            #self.itemTables[id] = legacyId
 
         self.multiplayerCorrelationId = self.getString()
         self.enableNewInventorySystem = self.getBool()
@@ -172,4 +178,80 @@ class StartGamePacket(DataPacket):
         self.putVector3(self.playerPosition)
 
         self.putLFloat(self.pitch)
-        # https://github.com/pmmp/PocketMine-MP/blob/stable/src/pocketmine/network/mcpe/protocol/StartGamePacket.php#L269
+        self.putLFloat(self.yaw)
+
+        # level settings
+        self.putVarInt(self.seed)
+        self.spawnSettings.write(self)
+        self.putVarInt(self.generator)
+        self.putVarInt(self.worldGamemode)
+        self.putVarInt(self.difficulty)
+        self.putBlockPosition(self.spawnX, self.spawnY, self.spawnZ)
+        self.putBool(self.hasAchievementsDisabled)
+        self.putVarInt(self.time)
+        self.putVarInt(self.eduEditionOffer)
+        self.putBool(self.hasEduFeaturesEnabled)
+        self.putString(self.eduProductUUID)
+        self.putLFloat(self.rainLevel)
+        self.putLFloat(self.lightningLevel)
+        self.putBool(self.hasConfirmedPlatformLockedContent)
+        self.putBool(self.isMultiplayerGame)
+        self.putBool(self.hasLANBroadcast)
+        self.putVarInt(self.xboxLiveBroadcastMode)
+        self.putVarInt(self.platformBroadcastMode)
+        self.putBool(self.commandsEnabled)
+        self.putBool(self.isTexturePacksRequired)
+        self.putGameRules(self.gameRules)
+        self.putBool(self.hasBonusChestEnabled)
+        self.putBool(self.hasStartWithMapEnabled)
+        self.putVarInt(self.defaultPlayerPermission)
+        self.putLInt(self.serverChunkTickRadius)
+        self.putBool(self.hasLockedBehaviorPack)
+        self.putBool(self.hasLockedResourcePack)
+        self.putBool(self.isFromLockedWorldTemplate)
+        self.putBool(self.useMsaGamertagsOnly)
+        self.putBool(self.isFromWorldTemplate)
+        self.putBool(self.isWorldTemplateOptionLocked)
+        self.putBool(self.onlySpawnV1Villagers)
+        self.putString(self.vanillaVersion)
+        self.putLInt(self.limitedWorldWidth)
+        self.putLInt(self.limitedWorldLength)
+        self.putBool(self.isNewNether)
+        self.putBool(self.experimentalGameplayOverride != None)
+        if self.experimentalGameplayOverride != None:
+            self.putBool(self.experimentalGameplayOverride)
+
+        self.putString(self.levelId)
+        self.putString(self.worldName)
+        self.putString(self.premiumWorldTemplateId)
+        self.putBool(self.isTrial)
+        self.putBool(self.isMovementServerAuthoritative)
+        self.putLLong(self.currentTick)
+
+        self.putVarInt(self.enchantmentSeed)
+
+        #if self.blockTable == None:
+        #    if self.blockTableCache = None:
+        #        self.blockTableCache = NetworkLittleEndianNBTStream().write(ListTag("", RuntimeBlockMapping.getBedrockKnownStates()))
+        #    self.put(self.blockTableCache)
+        #else:
+        #    self.put(NetworkLittleEndianNBTStream().write(self.blockTable))
+
+        #if self.itemTable = None:
+        #    if self.itemTableCache = None:
+        #        path = 'podrum/resources/vanilla'
+        #        self.itemTableCache = self.serializeItemTable(json.loads(ServerFS.checkForFile(path, '/item_id_map.json')))
+        #    self.put(self.itemTableCache)
+        #else:
+        #    self.put(self.serializeItemTable(self.itemTable))
+
+        self.putString(self.multiplayerCorrelationId)
+        self.putBool(self.enableNewInventorySystem)
+
+    def serializeItemTable(self, table):
+        stream = NetBinaryStream()
+        stream.putUnsignedVarInt(len(table))
+        for name, legacyId in table:
+            stream.putString(name)
+            stream.putLShort(legacyId)
+        return stream.getBuffer()
