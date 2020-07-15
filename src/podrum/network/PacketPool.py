@@ -17,7 +17,12 @@ from podrum.network.protocol.DisconnectPacket import DisconnectPacket
 from podrum.network.protocol.LoginPacket import LoginPacket
 from podrum.network.protocol.PlayStatusPacket import PlayStatusPacket
 from podrum.network.protocol.ResourcePacksInfoPacket import ResourcePacksInfoPacket
+from podrum.network.protocol.ResourcePackStackPacket import ResourcePackStackPacket
 from podrum.network.protocol.ServerToClientHandshakePacket import ServerToClientHandshakePacket
+from podrum.network.protocol.ResourcePackClientResponsePacket import ResourcePackClientResponsePacket
+from podrum.network.protocol.TextPacket import TextPacket
+from podrum.network.protocol.SetTimePacket import SetTimePacket
+from podrum.network.protocol.StartGamePacket import StartGamePacket
 
 class PacketPool:
     packetPool = {}
@@ -35,5 +40,9 @@ class PacketPool:
         self.registerPacket(LoginPacket)
         self.registerPacket(PlayStatusPacket)
         self.registerPacket(ResourcePacksInfoPacket)
+        self.registerPacket(ResourcePackStackPacket)
         self.registerPacket(ServerToClientHandshakePacket)
-        
+        self.registerPacket(ResourcePackClientResponsePacket)
+        self.registerPacket(TextPacket)
+        self.registerPacket(SetTimePacket)
+        self.registerPacket(StartGamePacket)
