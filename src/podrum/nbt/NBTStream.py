@@ -17,3 +17,26 @@ class NBTStream:
 
     buffer = ""
     offset = 0
+
+    def get(self, len):
+        if len == 0:
+            return ""
+
+        buflen = len(self.buffer)
+        if len == True:
+            str = self.buffer[:self.buffer]
+            self.offset = buflen
+        if len < 0:
+            self.offset = buflen - 1
+            return ""
+        remaining = buflen - self.offset
+        if remaining < len:
+            raise Exception("Not enough bytes left in buffer: need {}, have {}".format(len, remaining))
+
+        #return self.buffer[self.offset += 1] if len == 1 else self.buffer[(self.offset += len) - len:len]
+
+    def put(self, v):
+        self.buffer + v
+
+    def feof(self): pass
+    # https://github.com/pmmp/NBT/blob/stable/src/NBTStream.php#L95
