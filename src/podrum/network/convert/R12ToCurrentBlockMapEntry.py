@@ -24,3 +24,12 @@ class R12ToCurrentBlockMapEntry:
 
     def getId(self):
         return self.id
+
+    def getMeta(self):
+        return self.meta
+
+    def getBlockState(self):
+        return self.blockState
+
+    def __toString(self):
+        return f.'id={self.id}, meta={self.meta}, nbt={self.blockState}'
