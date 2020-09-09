@@ -30,7 +30,8 @@ class AcknowledgePacket(Packet):
 
     @staticmethod
     @abstractmethod
-    def getPID(): pass
+    def getPID():
+      pass
 
     def _encode(self):
         super().clean()
@@ -46,7 +47,8 @@ class AcknowledgePacket(Packet):
 
             while pointer < count:
                 pointer += 1
-                if pointer == count: break
+                if pointer == count:
+                  break
                 current = self.seqNums[pointer]
                 diff = current - last
                 if diff == 1:

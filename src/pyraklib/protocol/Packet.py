@@ -120,7 +120,9 @@ class Packet:
         self._decode()
 
     @abstractmethod
-    def _encode(self): pass
+    def _encode(self):
+         pass
 
     @abstractmethod
-    def _decode(self): pass
+    def _decode(self):
+         pass

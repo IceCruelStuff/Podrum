@@ -22,7 +22,6 @@ PyRakLib networking library.
 from abc import ABCMeta
 from struct import pack, unpack
 
-
 class Binary:
     __metaclass__ = ABCMeta
 
@@ -38,14 +37,14 @@ class Binary:
         return pack('<i', triad)[:3]
 
     @staticmethod
-    def readByte(raw, signed=True):
+    def readByte(raw, signed = True):
         if signed:
             return unpack('>b', raw)[0]
         else:
             return unpack('>B', raw)[0]
 
     @staticmethod
-    def writeByte(byte, signed=True):
+    def writeByte(byte, signed = True):
         if signed:
             return pack(">b", byte)
         else:

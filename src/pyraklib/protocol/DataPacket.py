@@ -32,7 +32,8 @@ class DataPacket(Packet):
 
     @staticmethod
     @abstractmethod
-    def getPID() -> int: pass
+    def getPID() -> int:
+      pass
 
     def _encode(self):
         self.putByte(self.getPID(), False)
