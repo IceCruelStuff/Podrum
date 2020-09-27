@@ -54,4 +54,4 @@ class LittleEndianNBTStream(NBTStream):
 
     def putIntArray(self, array):
         self.putInt(len(array))
-        self.put(struct.pack("V*", ...array))
+        self.put(struct.pack("V*", array))
