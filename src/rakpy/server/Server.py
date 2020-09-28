@@ -55,7 +55,7 @@ class Server(Thread):
         decodedPacket.decode()
         if not decodedPacket.isValid:
             raise Exception("Invalid offline message")
-        if decodedPacket.protocol != self.protocol:
+        if decodedPacket.protocolVersion != self.protocol:
             packet = IncompatibleProtocol()
             packet.protocol = self.protocol
             packet.serverId = self.id
@@ -78,14 +78,14 @@ class Server(Thread):
         packet.mtu = decodedPacket.mtu
         packet.clientAddress = address
         packet.encode()
-        token = f"{address.getAddress}:{address.getPort}"
+        token = str(address.getAddress()) + ":" + str(address.getPort())
         connection = Connection(self, decodedPacket.mtu, address)
         self.connections[token] = connection
         return packet.buffer
         
     def handle(self, data, address):
         header = data[0]
-        token = f"{address.getAddress}:{address.getPort}"
+        token = str(address.getAddress()) + ":" + str(address.getPort())
         if token in self.connections:
             connection = self.connections[token]
             connection.receive(data)
@@ -111,7 +111,7 @@ class Server(Thread):
                 connection.update(timeNow())
         else:
             return
-        sleep(self.raknetTickLength * 1000)
+        sleep(self.raknetTickLength)
         
     def run(self):
         while True:

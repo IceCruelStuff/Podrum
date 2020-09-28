@@ -1,9 +1,11 @@
 """
-*  ____           _
-* |  _ \ ___   __| |_ __ _   _ _ __ ___
-* | |_) / _ \ / _` | '__| | | | '_ ` _ \
-* |  __/ (_) | (_| | |  | |_| | | | | | |
-* |_|   \___/ \__,_|_|   \__,_|_| |_| |_|                                    |___/ 
+*
+*  __  __ _____ ____   ____                 _             
+* |  \/  |  ___|  _ \ / ___| __ _ _ __ ___ (_)_ __   __ _ 
+* | |\/| | |_  | | | | |  _ / _` | '_ ` _ \| | '_ \ / _` |
+* | |  | |  _| | |_| | |_| | (_| | | | | | | | | | | (_| |
+* |_|  |_|_|   |____/ \____|\__,_|_| |_| |_|_|_| |_|\__, |
+*                                                    |___/ 
 *
 * Licensed under the Apache License, Version 2.0 (the "License")
 * you may not use this file except in compliance with the License.
@@ -132,10 +134,9 @@ class Binary:
     @staticmethod
     def readInt(data: bytes) -> int:
         Binary.checkLength(data, 4)
+        value = unpack('>L', data)[0]
         if calcsize('P') == 8:
-            value = Binary.signInt(unpack('>L', data)[0])
-        else:
-            value = unpack('>L', data)[0]
+            value = Binary.signInt(value)
         return value
 
     @staticmethod
@@ -145,10 +146,9 @@ class Binary:
     @staticmethod
     def readLInt(data: bytes) -> int:
         Binary.checkLength(data, 4)
+        value = unpack('<L', data)[0]
         if calcsize('P') == 8:
-            value = Binary.signInt(unpack('<L', data)[0])
-        else:
-            value = unpack('<L', data)[0]
+            value = Binary.signInt(value)
         return value
 
     @staticmethod
@@ -324,3 +324,4 @@ class Binary:
     @staticmethod
     def flipLongEndianness(value: int) -> int:
         return Binary.readLLong(Binary.writeLong(value))
+    
