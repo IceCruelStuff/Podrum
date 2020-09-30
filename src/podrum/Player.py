@@ -18,6 +18,7 @@ from podrum import Server
 
 from rakpy.protocol.EncapsulatedPacket import EncapsulatedPacket
 from rakpy.server.Connection import Connection
+import re
 
 class Player:
 
@@ -138,6 +139,15 @@ class Player:
 
     def isSpectator(self):
         return self.gamemode == self.SPECTATOR
+
+    @staticmethod
+    def isValidUserName(name):
+        if name == None:
+            return False
+
+        lname = name.lower()
+        len = len(name)
+        return lname != "rcon" and lname != "console" and len >= 1 and len <= 16 and re.search("/[^A-Za-z0-9_ ]/", name) == 0
 
     def sendSettings(self):
         PacketPool.AdventureSettingsPacket.setFlag(PacketPool.AdventureSettingsPacket.WORLD_IMMUTABLE, self.isSpectator())
