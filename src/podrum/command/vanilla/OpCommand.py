@@ -27,5 +27,3 @@ class OpCommand(Command):
                 sender.sendMessage("op <player>")
         except:
             sender.sendMessage("op <player>")
-        else:
-            sender.sendMessage(" ".join(args[1:]))
