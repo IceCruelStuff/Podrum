@@ -11,7 +11,21 @@
 """
 
 from podrum.command.Command import Command
+from podrum.Player import Player
 
 class OpCommand(Command):
     def __init__(self, name = "", description = ""):
         super().__init__("op", "Op Command")
+
+    def execute(self, sender, args):
+        try:
+            args[1]
+            try:
+                name = args.pop(0)
+                Player.isValidUserName(name)
+            except:
+                sender.sendMessage("op <player>")
+        except:
+            sender.sendMessage("op <player>")
+        else:
+            sender.sendMessage(" ".join(args[1:]))
