@@ -16,6 +16,7 @@ from podrum.command.vanilla.ReloadCommand import ReloadCommand
 from podrum.command.vanilla.SayCommand import SayCommand
 from podrum.command.vanilla.StopCommand import StopCommand
 from podrum.command.vanilla.SystemCommand import SystemCommand
+from podrum.command.vanilla.OpCommand import OpCommand
 from podrum.utils.Logger import Logger
 
 class CommandManager:
@@ -39,6 +40,7 @@ class CommandManager:
         self.registerCommand(SayCommand())
         self.registerCommand(StopCommand())
         self.registerCommand(SystemCommand())
+        self.registerCommand(OpCommand())
 
     def registerCommand(self, command):
         self.commands.update({command.getName(): command})
