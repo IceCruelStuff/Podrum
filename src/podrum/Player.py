@@ -108,8 +108,8 @@ class Player:
     def getDisplayName(self):
         return self.displayName
 
-    def isOp():
-        return Server.Server.isOp(self.getName())
+    def isOp(self):
+        return Server.isOp(self.getName())
 
     def setAllowedFlight(self, value):
         self.allowFlight = value
