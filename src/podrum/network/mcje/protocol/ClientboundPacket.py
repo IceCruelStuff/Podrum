@@ -10,5 +10,7 @@
 * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 """
 
-class Packet:
+from podrum.network.mcje.protocol.Packet import Packet
+
+class ClientboundPacket(Packet):
     pass
