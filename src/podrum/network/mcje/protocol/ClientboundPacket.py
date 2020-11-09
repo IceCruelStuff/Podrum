@@ -10,7 +10,7 @@
 * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 """
 
-from podrum.network.mcje.protocol.Packet import Packet
+from podrum.network.NetBinaryStream import NetBinaryStream
 
-class ClientboundPacket(Packet):
+class ClientboundPacket(NetBinaryStream):
     pass
